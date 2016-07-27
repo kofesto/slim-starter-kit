@@ -1,14 +1,12 @@
 <?php 
 
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 $app->get('/', function(Request $request, Response $response) {
 
-	$this->logger->addInfo("Something interesting happened");
-	
     return $this->view->render($response, 'home.twig', [
-        'title' => 'Home'
+		'title'      => 'Home'
     ]);
 });
 

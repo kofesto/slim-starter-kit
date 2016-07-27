@@ -7,6 +7,8 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Monolog\Formatter\LineFormatter;
 
+use Slim\App;
+
 if(file_exists(BASE.'/.env'))	{
 	$dotenv = new Dotenv(BASE);
 	$dotenv->load();
@@ -15,8 +17,9 @@ if(file_exists(BASE.'/.env'))	{
 // Create and configure Slim app
 $configuration = [
     'settings' => [
-		'addContentLengthHeader' => false,
-		'displayErrorDetails'    => (getenv('APP_DEBUG') == 'false') ? 0 : 1,
+        'determineRouteBeforeAppMiddleware' => true,
+        'addContentLengthHeader'            => false,
+        'displayErrorDetails'               => (getenv('APP_DEBUG') == 'false') ? 0 : 1,
 
         'logger' => [
             'name'  => 'slim-app',
@@ -70,7 +73,11 @@ $container['view'] = function ($c) {
 };
 
 // Prepare app
-$app = new \Slim\App($container);
+$app = new App($container);
+
+// Add middlewares to the application
+session_start();
+$app->add(new \Slim\Csrf\Guard);
 
 require_once BASE . '/app/http/routes.php';
 
