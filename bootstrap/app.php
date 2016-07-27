@@ -1,6 +1,10 @@
 <?php 
+// Start PHP session
+session_start();
 
 use Slim\App;
+use Slim\Csrf\Guard;
+use Slim\Flash\Messages;
 
 use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
@@ -58,6 +62,15 @@ $container['db'] = function ($container) use ($capsule) {
     return $capsule;
 };
 
+$container['csrf'] = function ($c) {
+    return new Guard;
+};
+
+$container['flash'] = function () {
+    return new Messages();
+};
+
+
 $container['logger'] = function ($c) {
     
     $settings   = $c->get('settings')['logger'];
@@ -92,8 +105,7 @@ $container['view'] = function ($c) {
 $app = new App($container);
 
 // Add middlewares to the application
-session_start();
-$app->add(new \Slim\Csrf\Guard);
+$app->add($container->get('csrf'));
 
 require_once BASE . '/app/http/routes.php';
 
