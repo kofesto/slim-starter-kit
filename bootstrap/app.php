@@ -107,6 +107,6 @@ $app = new App($container);
 // Add middlewares to the application
 $app->add($container->get('csrf'));
 
-require_once BASE . '/app/http/routes.php';
+require_once BASE . '/routes/web.php';
 
 return $app;

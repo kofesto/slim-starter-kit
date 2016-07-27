@@ -2,6 +2,7 @@ composer.lock
 phpunit.xml
 vendor
 storage
+public/assets
 .env
 *.sublime-project
 *.sublime-workspace

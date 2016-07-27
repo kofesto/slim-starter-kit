@@ -1,11 +1,5 @@
 {% extends "layout.twig" %}
 
 {% block content %}
-<h1>Welcome</h1>
-<h1>User List</h1>
-<ul>
-	{% for key,user in users %}
-    	<li><a href="{{ path_for('profile', { 'name': user.id }) }}">{{ user.username|e }}</a></li>
-	{% endfor %}
-</ul>
+<h1>Slim Starter</h1>
 {% endblock content %}
