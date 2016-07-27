@@ -1,5 +1,7 @@
 <?php 
 
+use Slim\App;
+
 use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
 
@@ -7,7 +9,10 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Monolog\Formatter\LineFormatter;
 
-use Slim\App;
+use Illuminate\Database\Capsule\Manager as Capsule;
+
+// set timezone for timestamps etc
+date_default_timezone_set('UTC');
 
 if(file_exists(BASE.'/.env'))	{
 	$dotenv = new Dotenv(BASE);
@@ -41,6 +46,17 @@ $configuration = [
     ],
 ];
 $container = new \Slim\Container($configuration);
+
+$capsule = new capsule;
+$capsule->addConnection($container['settings']['db']);
+
+$capsule->setAsGlobal();
+$capsule->bootEloquent();
+
+$container['db'] = function ($container) use ($capsule) {
+
+    return $capsule;
+};
 
 $container['logger'] = function ($c) {
     

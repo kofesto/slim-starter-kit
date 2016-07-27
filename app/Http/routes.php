@@ -5,8 +5,11 @@ use Slim\Http\Response;
 
 $app->get('/', function(Request $request, Response $response) {
 
+	$users = User::all();
+
     return $this->view->render($response, 'home.twig', [
-		'title'      => 'Home'
+		'title' => 'Home',
+		'users' =>	$users
     ]);
 });
 
